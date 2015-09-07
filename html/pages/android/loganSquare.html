@@ -4,6 +4,165 @@
 	<title>android json</title>
 </head>
 <body>
+	<div>
+	buildscript {
+	    repositories {
+	        jcenter()
+	    }
+	    dependencies {
+	        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+	    }
+	}
+	apply plugin: 'com.neenbedankt.android-apt'
 
+	dependencies {
+	    apt 'com.bluelinelabs:logansquare-compiler:1.1.0'
+	    compile 'com.bluelinelabs:logansquare:1.1.0'
+	}
+	</div>
+		<h1>全属性注解方案</h1>
+	<div>
+	@JsonObject
+	public class Image {
+
+	    /*
+	     * 标准的属性注解
+	     */
+	    @JsonField
+	    public String format;
+
+	    /*
+	     * 解析和序列化时，该属性的key用"_id"代替"imageId"
+	     */
+	    @JsonField(name = "_id")
+	    public int imageId;
+
+	    @JsonField
+	    public String url;
+
+	    @JsonField
+	    public String description;
+
+	    /*
+	     * 注意虽然该属性只有包访问权限，但LoganSquare可毫无障碍地处理
+	     */
+	    @JsonField(name = "similar_images")
+	    List<Image> similarImages;
+
+	    /*
+	     * 不注解的属性默认被LoganSquare忽略
+	     */
+	    public int nonJsonField;
+
+	    /*
+	     * ！！！强烈注意private权限的属性必须提供getter和setter， 不然你会后悔的
+	     */
+	    @JsonField
+	    private int privateInt;
+
+	    public int getPrivateInt() {
+	        return privateInt;
+	    }
+
+	    public void setPrivateInt(int i) {
+	        privateInt = i;
+	    }
+
+	    /*
+	     * 还贴心地提供了解析完成后和序列化前的回调接口，当然是可选的
+	     */
+	    @OnJsonParseComplete void onParseComplete() {
+	        // 解析完成后干点什么
+	    }
+
+	    @OnPreJsonSerialize void onPreSerialize() {
+	        //序列化前干点什么
+	    }
+
+	}
+	</div>
+	<h1>非private属性注解方案</h1>
+	<div>
+		/*非private属性都会接受解析和序列化，即使属性没有写@JsonFields注解，但要先配置 fieldDetectionPolicy
+		 * 这个方案比第一个方案写少点注解
+		 */
+		@JsonObject(fieldDetectionPolicy = FieldDetectionPolicy.NONPRIVATE_FIELDS)
+		public class Image {
+
+		    /*
+		     *普通声明的属性默认会被解析和序列化
+		     */
+		    public String format;
+
+		    /*
+		     *重命名key还是需要注解来指出的
+		     */
+		    @JsonField(name = "_id")
+		    public int imageId;
+
+		    public String url;
+
+		    public String description;
+
+		    /*
+		     * 包访问权限的处理是没问题的
+		     */
+		    List<Image> similarImages;
+
+		    /*
+		     * 用@JsonIgnore来忽略不想被解析和序列化的属性
+		     */
+		    @JsonIgnore
+		    public int nonJsonField;
+
+		    /*
+		     * 该策略下private属性默认忽略
+		     */
+		    private int privateInt;
+
+		    public int getPrivateInt() {
+		        return privateInt;
+		    }
+
+		    public void setPrivateInt(int i) {
+		        privateInt = i;
+		    }
+
+		  @OnJsonParseComplete void onParseComplete() {
+		        // 解析完成后干点什么
+		    }
+
+		    @OnPreJsonSerialize void onPreSerialize() {
+		        //序列化前干点什么
+		    }
+		}
+	</div>
+	<h1>非private+Accessor注解方案</h1>
+	<div>
+		/*
+		 * 与第2种类似，非private属性和所有有getter和setter的属性都会被解析和序列化。可以让某些private属性
+		 * 也接受转换;
+		 * 将 fieldDetectionPolicy 设置为FieldDetectionPolicy.NONPRIVATE_FIELDS_AND_ACCESSORS即可
+		 */
+	</div>
+	<h1>将JSON对象解析为实体类</h1>
+	<div>
+		// 支持直接从InputStream解析
+		InputStream is = ...;
+		Image imageFromInputStream = LoganSquare.parse(is, Image.class);
+
+		// 从Json字符串解析
+		String jsonString = ...;
+		Image imageFromString = LoganSquare.parse(jsonString, Image.class);
+	</div>
+	<h1>实体类序列化为JSON对象</h1>
+	<div>
+		// Serialize it to an OutputStream
+		OutputStream os = ...;
+		LoganSquare.serialize(image, os);
+
+		// Serialize it to a String
+		String jsonString = LoganSquare.serialize(image);
+	</div>
 </body>
 </html>
