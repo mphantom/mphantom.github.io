@@ -1,1 +1,25 @@
-baseurl: 
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            mphantom
+tagline:          ''
+description:      '『he looks like a dog so』 『because he is a PM』'
+url:              http://mphantom.com
+
+author:
+  name:           'mphantom'
+  email:          wushaorongvs@gmail.com
+
+paginate:      10
+
+# Custom vars
+version:          0.0.3
+
+# Comments
+
+
