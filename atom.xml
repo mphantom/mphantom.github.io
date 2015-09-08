@@ -1,0 +1,32 @@
+---
+layout: nil
+---
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+  <title>{{ site.title | xml_escape }}</title>
+  <link href="{{ site.url }}{{ site.baseurl }}"/>
+  <link type="application/atom+xml" rel="self" href="{{ "/atom.xml" | prepend: site.baseurl | prepend: site.url }}"/>
+  <updated>{{ site.time }}</updated>
+  <id>tag:jekyll.mdl,{{ post.date }}/</id>
+  <author>
+    <name>{{ site.title | xml_escape }}</name>
+    <email>{{ site.email }}</email>
+  </author>
+  
+  {% for post in site.posts %}
+  <entry>
+    <id>{{ post.url | prepend: site.baseurl | prepend: site.url }}</id>
+    <link type="text/html" rel="alternate" href="{{ post.url | prepend: site.baseurl | prepend: site.url }}"/>
+    <title>{{ post.title }}</title>
+    <published>{{ post.date | date_to_xmlschema }}</published>
+    <updated>{{ post.date | date_to_xmlschema }}</updated>
+    <author>
+      <name>{{ site.title | xml_escape }}</name>
+      <uri>{{ site.url }}</uri>
+    </author>
+    <content type="html">{{ post.content | xml_escape }}</content>
+  </entry>
+  {% endfor %}
+ 
+</feed>
