@@ -1,3 +1,9 @@
+
+---
+layout:post
+title:virtualAPP解析第一弹
+---
+
 VirtualCore.java 
 ```java
 patchManager.injectAll();
