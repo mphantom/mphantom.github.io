@@ -1,7 +1,6 @@
-
 ---
-layout:post
-title:VirtualApp解析第二弹
+layout: post
+title: VirtualApp解析第二弹
 ---
 
 ## VirtualApp解析第二弹
