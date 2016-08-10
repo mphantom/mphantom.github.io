@@ -8,6 +8,8 @@ title: VirtualApp解析第二弹
 这一节用来解析BinderProvider这个类的创建流程。  
 BinderProvider是继承自ContentProvider，是从Application启动时就创建的。  
 在它的onCreate方法中做了如下操作：  
+
+
 ```java
 public boolean onCreate() {
         Context context = getContext();
