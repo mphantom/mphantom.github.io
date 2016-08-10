@@ -31,7 +31,11 @@ public boolean onCreate() {
         return true;
     }
 ```
-这里主要是初始化一些Service并调用addService（）  
+
+
+这里主要是初始化一些Service并调用addService（） 
+
+
 ```java  
 private void addService(String name, IBinder service) {
 	ServiceCache.addService(name, service);
@@ -59,8 +63,12 @@ public class ServiceCache {
 
 }
 ```
+
+
 addService是将传入的变量存储在sCache这个Map中。  
 在BinderProvider中还定义了一个名叫ServiceFetcher的内部类。用来操作ServiceCache这个类。  
+
+
 ```java
     private class ServiceFetcher extends IServiceFetcher.Stub {
         @Override
@@ -86,8 +94,12 @@ addService是将传入的变量存储在sCache这个Map中。
         }
     }
 ```
+
+
 这个类的作用无非就是提供外部对ServiceChache的操作。但是是怎么将这个开放到外部的呢？？  
 在BinderProvider的call中给出了答案。。  
+
+
 ```java
     public Bundle call(String method, String arg, Bundle extras) {
         if (method.equals(MethodConstants.INIT_SERVICE)) {
@@ -100,8 +112,12 @@ addService是将传入的变量存储在sCache这个Map中。
         }
     }
 ```
+
+
 那么是在哪里调用并获取到的这个对象呢？？  
 在ServiceManagerNative我们可以看到。。  
+
+
 ```java
 	private static final String SERVICE_CP_AUTH = "virtual.service.BinderProvider";
 
@@ -116,5 +132,7 @@ addService是将传入的变量存储在sCache这个Map中。
 		return null;
 	}
 ```
+
+
 ProviderCaller这个类是对ContentResolver的call操作做了封装。也就是在这里调用了BinderProvider中的call方法。并且在ServiceManagerNative中使用getService（）方法获取到之前在BinderProvider初始化并保存的service对象。  
 那么这样在其他类中就可以通过ServiceManagerNative的getService（）方法获取到保存的对象。
