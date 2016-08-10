@@ -1,3 +1,9 @@
+
+---
+layout:post
+title:VirtualApp解析第二弹
+---
+
 ## VirtualApp解析第二弹
 
 这一节用来解析BinderProvider这个类的创建流程。  
