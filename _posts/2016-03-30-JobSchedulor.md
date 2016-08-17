@@ -9,7 +9,7 @@ JobSchedulor的使用由两部分组成:JobService和jobSchedulor。
 
 ##创建JobService
 创建一个继承JobService的Service类，这个JobService运行在主线程，需要实现onStartJob(JobParameters params)和onStop(JobParameters params)  
-
+```java
     public class JobSchedulerService extends JobService {
     	@Override
     	public boolean onStartJob(JobParameters params) {
@@ -21,15 +21,15 @@ JobSchedulor的使用由两部分组成:JobService和jobSchedulor。
         	return false;
     	}
 	}
-
+```  
 这两个方法是用来给系统调用的。当系统调用onStartJob时，返回false表示这个任务已经结束，返回true表示这个任务正要执行。
 ##创建JobScheduler  
-
+```java
     JobScheduler jobScheduler=(JobSchduler)getSystemService(Context.JOB_SCHEDULER_SERVICE);
     JobInfo.Builder builder = new JobInfo.Builder( 1,
         new ComponentName( getPackageName(), 
             JobSchedulerService.class.getName() ) );
     builder.setPeriodic( 3000 );
-
+```
 builder还可以设置一定的条件来触发JobService的执行。
 
